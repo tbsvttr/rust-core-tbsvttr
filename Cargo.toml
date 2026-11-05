@@ -1,0 +1,20 @@
+[package]
+name = "rust-core-tbsvttr"
+version = "0.1.0"
+edition = "2024"
+description = "Shared zero-dependency Rust foundation powering all three rust-iouring-tbsvttr benchmark servers"
+license = "MIT"
+
+[dependencies]
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = "symbols"
+debug = false
+
+[profile.test]
+opt-level = 3
+
