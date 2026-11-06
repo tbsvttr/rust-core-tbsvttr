@@ -5,8 +5,13 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WEB_BENCH="$(cd "$ROOT_DIR/.." && pwd)"
 
 echo "==> Syncing shared modules between rust-core-tbsvttr and Challenge 3 (multicore-server-challenge)..."
-cp "$WEB_BENCH/multicore-server-challenge/submissions/rust-iouring-tbsvttr"/src/{auth,codec,engine,main,queries,reactor,router,wire}.rs \
+rm -f "$ROOT_DIR"/src/{auth,codec,engine,queries,reactor,router,wire}.rs
+cp "$WEB_BENCH/multicore-server-challenge/submissions/rust-iouring-tbsvttr/build.rs" "$ROOT_DIR/build.rs"
+cp "$WEB_BENCH/multicore-server-challenge/submissions/rust-iouring-tbsvttr"/src/{bcrypt,blowfish,buf,json,jwt,main,pg,server,sys}.rs \
    "$ROOT_DIR/src/"
+if ! grep -q "mod gzip;" "$ROOT_DIR/src/main.rs"; then
+  sed -i.bak '1s/^/#[allow(dead_code)]\nmod gzip;\n/' "$ROOT_DIR/src/main.rs" && rm -f "$ROOT_DIR/src/main.rs.bak"
+fi
 
 echo "==> Syncing gzip.rs from Challenge 2 (million-users-challenge)..."
 cp "$WEB_BENCH/million-users-challenge/submissions/rust-iouring-tbsvttr/src/gzip.rs" \
